@@ -1,7 +1,8 @@
-from pipe import _pipe
+from pipe import _pipe, pipe, _get_arg_type, _get_ret_type, check_types
 import unittest
 from unittest import skip
 from functools import partial
+from typing import List, Tuple
 
 
 class test_pipe(unittest.TestCase):
@@ -85,6 +86,49 @@ class test_pipe(unittest.TestCase):
         gold = 6
         output = proc1 | proc2
         output = output.run()
+        self.assertEqual(gold, output)
+
+    def test_mismatched_fnc_signatures(self):
+        @pipe
+        def f1() -> int:
+            return 1
+        @pipe
+        def f2(x: str) -> str:
+            return x.strip()
+        with self.assertRaises(TypeError):
+            f1 | f2
+
+
+class test_get_ret_type(unittest.TestCase):
+
+    def test_one_return_type(self):
+        def f1(x: int) -> int:
+            return x + 1
+        gold = int
+        output = _get_ret_type(f1)
+        self.assertEqual(gold, output)
+
+
+class test_get_arg_type(unittest.TestCase):
+
+    def test_one_arg_type(self):
+        def f1(x: int) -> int:
+            return x + 1
+        gold = int
+        output = _get_arg_type(f1)
+        self.assertEqual(gold, output)
+
+
+class test_check_types(unittest.TestCase):
+
+    def test_ints(self):
+        def f1(x: int) -> int:
+            return x + 1
+        def f2(y: int) -> int:
+            return y * 2
+
+        gold = True
+        output = check_types(f1, f2)
         self.assertEqual(gold, output)
 
 
