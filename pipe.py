@@ -1,30 +1,30 @@
-from functools import partial, wraps
+from functools import wraps
 from inspect import signature
-from typing import Callable
+from typing import Any, Callable, Union
 from collections.abc import Iterable
 
 
 class _pipe:
 
     def __init__(self, fnc: Callable):
-        self.fnc = fnc
-        self.inpt = None
-        self.arity = len(dict(signature(fnc).parameters))
-        self.args = None
+        self.fnc: Callable = fnc
+        self.inpt: Union[None, _pipe] = None
+        self.arity: int = len(dict(signature(fnc).parameters))
+        self.args: Union[None, Any] = None
 
-    def run(self):
+    def run(self) -> Any:
         if not self.inpt:
             if not self.args:
                 return self.fnc()
             return self.fnc(*self.args)
 
         args = self.inpt.run()
-        
+
         if isinstance(args, Iterable):
             return self.fnc(*args)
         return self.fnc(args)
 
-    def __call__(self, *args):
+    def __call__(self, *args: Any):
         self.args = args
         return self
 
@@ -36,8 +36,8 @@ class _pipe:
         return other
 
 
-def pipe(fnc):
+def pipe(fnc: Callable):
     @wraps(fnc)
-    def wrapper(*args):
+    def wrapper(*args: Any):
         return fnc(*args)
     return _pipe(wrapper)
