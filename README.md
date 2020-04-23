@@ -43,7 +43,7 @@ print(pipeline.run())
 
 ```python
 @pipe
-def clean_str() -> int:
+def return_one() -> int:
     return 1
 
 @pipe
@@ -52,6 +52,6 @@ def replace_cheer(string: str) -> str:
     good_char = "."
     return string.replace(bad_char, good_char)
 
-pipeline = clean_str(" hello, world!\n") | replace_cheer
+pipeline = return_one | replace_cheer
 # TypeError: The function signatures do not match
 ```
