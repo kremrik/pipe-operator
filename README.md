@@ -1,5 +1,7 @@
 # Fake Python pipe operator
 
+![Python application](https://github.com/kremrik/pipe-operator/workflows/Python%20application/badge.svg)
+
 ### Description
 This simple project is something I built for fun while trying to emulate one of my favorite concepts in programming: the Linux pipe
 There are many very obvious differences:
