@@ -4,18 +4,18 @@ from typing import Any, Callable, Union
 from collections.abc import Iterable
 
 
-def get_sig(fnc: Callable) -> Signature:
+def _get_signature(fnc: Callable) -> Signature:
     return signature(fnc)
 
 
 def _get_ret_type(fnc: Callable) -> type:
-    sig = get_sig(fnc)
+    sig = _get_signature(fnc)
     ret_type = sig.return_annotation
     return ret_type
 
 
 def _get_arg_type(fnc: Callable) -> type:
-    sig = get_sig(fnc)
+    sig = _get_signature(fnc)
     params = list(sig.parameters.values())
     arg_type = params[0].annotation
     return arg_type
@@ -32,7 +32,7 @@ class _pipe:
     def __init__(self, fnc: Callable):
         self.fnc: Callable = fnc
         self.inpt: Union[None, _pipe] = None
-        self.arity: int = len(dict(get_sig(fnc).parameters))
+        self.arity: int = len(dict(_get_signature(fnc).parameters))
         self.args: Union[None, Any] = None
 
     def run(self) -> Any:

@@ -1,4 +1,4 @@
-from pipe import _pipe, pipe, _get_arg_type, _get_ret_type, check_types
+from pipe.pipe import _pipe, pipe, _get_arg_type, _get_ret_type, check_types
 import unittest
 from unittest import skip
 from functools import partial
