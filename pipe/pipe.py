@@ -52,6 +52,7 @@ class _pipe:
         return self
 
     def __or__(self, other):
+        # call inputs "left", "right"
         if not other.arity:
             raise ValueError("The righthand expression must be of arity >= 1")
 
